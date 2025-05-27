@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endpoints da API de Alunos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      background-color: #f9f9f9;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    code, pre {
+      background-color: #ecf0f1;
+      padding: 0.5rem;
+      display: block;
+      overflow-x: auto;
+      border-radius: 4px;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    nav {
+      margin-bottom: 3rem;
+      background-color: #fff;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      margin-bottom: 0.5rem;
+    }
+    nav a {
+      color: #2980b9;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 Endpoints da API de Alunos</h1>
+  <p>Esta API permite gerenciar o cadastro de alunos, incluindo matrícula, desmatrícula e pagamentos.</p>
+
+  <h2 id="base-url">🔗 Base URL</h2>
+  <code>http://localhost:5000</code>
+
+  <nav>
+    <h2>📚 Sumário</h2>
+    <ul>
+      <li><a href="#endpoints-alunos">📌 Endpoints de Alunos</a></li>
+      <li><a href="#endpoints-pagamentos">💰 Endpoints de Pagamentos</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="endpoints-alunos">📌 Endpoints de Alunos</h2>
+
+  <section>
+    <h3>✅ Criar Aluno</h3>
+    <p><strong>POST</strong> <code>/alunos</code></p>
+    <pre>{
+  "nome": "João da Silva",
+  "endereco": "Rua A, 123",
+  "cidade": "São Paulo",
+  "estado": "SP",
+  "telefone": "(11) 99999-9999"
+}</pre>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "id_aluno": 1 }</pre>
+  </section>
+
+  <section>
+    <h3>📄 Listar Alunos</h3>
+    <p><strong>GET</strong> <code>/alunos</code></p>
+    <p><strong>Resposta:</strong></p>
+    <pre>[
+  {
+    "id_aluno": 1,
+    "nome": "João da Silva",
+    "endereco": "Rua A, 123",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "telefone": "(11) 99999-9999",
+    "data_matricula": null,
+    "data_desligamento": null,
+    "data_vencimento": null
+  }
+]</pre>
+  </section>
+
+  <section>
+    <h3>🔍 Buscar Aluno por ID</h3>
+    <p><strong>GET</strong> <code>/alunos/{aluno_id}</code></p>
+    <p><strong>Exemplo:</strong> <code>/alunos/1</code></p>
+  </section>
+
+  <section>
+    <h3>✏️ Atualizar Aluno</h3>
+    <p><strong>PUT</strong> <code>/alunos/{aluno_id}</code></p>
+    <pre>{
+  "cidade": "Rio de Janeiro"
+}</pre>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "mensagem": "Aluno atualizado com sucesso" }</pre>
+  </section>
+
+  <section>
+    <h3>❌ Deletar Aluno</h3>
+    <p><strong>DELETE</strong> <code>/alunos/{aluno_id}</code></p>
+    <p><strong>Restrições:</strong> apenas alunos <strong>não matriculados</strong> ou <strong>com data de desligamento</strong> podem ser excluídos.</p>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "mensagem": "Aluno deletado com sucesso" }</pre>
+  </section>
+
+  <section>
+    <h3>🎓 Matricular Aluno</h3>
+    <p><strong>PUT</strong> <code>/alunos/{aluno_id}/matricula</code></p>
+    <pre>{
+  "data_matricula": "2025-06-01"
+}</pre>
+    <p><strong>Resposta:</strong></p>
+    <pre>{
+  "mensagem": "Matrícula realizada com sucesso",
+  "data_matricula": "2025-06-01",
+  "data_vencimento": "2025-07-01"
+}</pre>
+  </section>
+
+  <section>
+    <h3>📤 Desmatricular Aluno</h3>
+    <p><strong>PUT</strong> <code>/alunos/{aluno_id}/desmatricula</code></p>
+    <pre>{
+  "data_desligamento": "2025-07-01"
+}</pre>
+    <p><strong>Resposta:</strong></p>
+    <pre>{
+  "mensagem": "Aluno desmatriculado com sucesso",
+  "data_desligamento": "2025-07-01"
+}</pre>
+  </section>
+
+  <h2 id="endpoints-pagamentos">💰 Endpoints de Pagamentos</h2>
+  <p>Estes endpoints permitem registrar, listar, atualizar e remover pagamentos de alunos <strong>matriculados</strong>.</p>
+
+  <section>
+    <h3>✅ Criar Pagamento</h3>
+    <p><strong>POST</strong> <code>/pagamentos</code></p>
+    <pre>{
+  "id_aluno": 1,
+  "valor": 120.50,
+  "tipo": "dinheiro"
+}</pre>
+    <p><strong>Restrições:</strong> o aluno deve estar matriculado.</p>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "id_pagamento": 1 }</pre>
+  </section>
+
+  <section>
+    <h3>📄 Listar Pagamentos</h3>
+    <p><strong>GET</strong> <code>/pagamentos</code></p>
+    <p><strong>Resposta:</strong></p>
+    <pre>[
+  {
+    "id_pagamento": 1,
+    "id_aluno": 1,
+    "data": "2025-06-01",
+    "valor": 120.50,
+    "tipo": "dinheiro"
+  }
+]</pre>
+  </section>
+
+  <section>
+    <h3>✏️ Atualizar Pagamento</h3>
+    <p><strong>PUT</strong> <code>/pagamentos/{pagamento_id}</code></p>
+    <pre>{
+  "id_aluno": 1,
+  "valor": 150.00,
+  "tipo": "cartão"
+}</pre>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "mensagem": "Pagamento atualizado com sucesso" }</pre>
+    <p><strong>Restrições:</strong> o aluno deve estar matriculado.</p>
+  </section>
+
+  <section>
+    <h3>❌ Deletar Pagamento</h3>
+    <p><strong>DELETE</strong> <code>/pagamentos/{pagamento_id}</code></p>
+    <p><strong>Resposta:</strong></p>
+    <pre>{ "mensagem": "Pagamento deletado com sucesso" }</pre>
+  </section>
+
+</body>
+</html>
